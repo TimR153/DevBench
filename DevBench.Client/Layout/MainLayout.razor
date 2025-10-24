@@ -1,23 +1,87 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
+<MudThemeProvider @ref="_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+        <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
+            <MudLink Href="/">
+                <MudImage Src="_content/Fahrtenbuch.Shared/favicon.png"
+                          Alt="App Logo"
+                          Width="32" />
+            </MudLink>
+            <MudIconButton OnClick="DrawerToggle"
+                           Icon="@Icons.Material.Rounded.Notes"
+                           Color="Color.Inherit"
+                           Edge="Edge.Start" />
+        </MudStack>
+        <MudSpacer />
+        <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
+            <MudIconButton Icon="@DarkLightModeButtonIcon"
+                           OnClick="DarkModeToggle"
+                           Color="Color.Inherit"
+                           Edge="Edge.End" />
+        </MudStack>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">@Constants.AppName</MudText>
+        </MudDrawerHeader>
         <NavMenu />
-    </div>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+@code {
+    private bool _drawerOpen = true;
+    private bool _isDarkMode = true;
+    private MudThemeProvider? _mudThemeProvider;
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+    MudTheme _theme = new MudTheme()
+    {
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+        PaletteLight = new PaletteLight()
+        {
+            Primary = MudBlazor.Colors.Blue.Darken2,
+            Secondary = MudBlazor.Colors.Blue.Accent2,
+            AppbarBackground = MudBlazor.Colors.Gray.Darken1,
+            DrawerBackground = MudBlazor.Colors.Gray.Lighten1,
+            Background = MudBlazor.Colors.Gray.Lighten2,
+            DrawerText = MudBlazor.Colors.Gray.Darken4
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = MudBlazor.Colors.Blue.Darken2,
+            Secondary = MudBlazor.Colors.Blue.Accent4,
+            TextPrimary = MudBlazor.Colors.Gray.Lighten3,
+            DrawerText = MudBlazor.Colors.Gray.Lighten2
+        },
+        LayoutProperties = new LayoutProperties()
+        {
+            DrawerWidthLeft = "260px",
+            DrawerWidthRight = "300px"
+        }
+    };
+
+
+    protected override void OnInitialized()
+    {
+    }
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    void DarkModeToggle()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+    string DarkLightModeButtonIcon => _isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode;
+}
