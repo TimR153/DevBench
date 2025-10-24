@@ -9,26 +9,51 @@
     <MudAppBar>
         <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
             <MudLink Href="/">
-                <MudImage Src="_content/Fahrtenbuch.Shared/favicon.png"
+                <MudImage Src="favicon.png"
                           Alt="App Logo"
-                          Width="32" />
+                          Width="40" />
             </MudLink>
             <MudIconButton OnClick="DrawerToggle"
                            Icon="@Icons.Material.Rounded.Notes"
                            Color="Color.Inherit"
                            Edge="Edge.Start" />
+            <SearchBox />
         </MudStack>
         <MudSpacer />
         <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
+
+            <MudIconButton Icon="@Icons.Material.Filled.KeyboardCommandKey"
+                           Target="_blank"
+                           Color="Color.Inherit"
+                           Edge="Edge.End"
+                           AriaLabel="Open Command Palette" />
+
+            <MudTooltip Text=".NET Docs">
+                <MudIconButton Icon="@Icons.Custom.Brands.Microsoft"
+                               Href="https://docs.microsoft.com/dotnet/"
+                               Target="_blank"
+                               Color="Color.Inherit"
+                               Edge="Edge.End" />
+            </MudTooltip>
+
+            <MudTooltip Text="GitHub Repository">
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
+                               Href="https://github.com/timr153/devbench"
+                               Target="_blank"
+                               Color="Color.Inherit"
+                               Edge="Edge.End" />
+            </MudTooltip>
+
             <MudIconButton Icon="@DarkLightModeButtonIcon"
                            OnClick="DarkModeToggle"
                            Color="Color.Inherit"
-                           Edge="Edge.End" />
+                           Edge="Edge.End"
+                           AriaLabel="Toggle dark mode" />
         </MudStack>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1">@Constants.AppName</MudText>
+            <MudImage Src="appLogo.png" Alt="App Logo" Class="mt-2" Width="200" />
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>

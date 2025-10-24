@@ -1,0 +1,47 @@
+﻿@inject NavigationManager Navigation
+<MudAutocomplete T="ToolInfo"
+                 ToStringFunc="t => t?.Title"
+                 SearchFunc="@SearchTools"
+                 Placeholder="Tool suchen..."
+                 Adornment="Adornment.Start"
+                 AdornmentIcon="@Icons.Material.Filled.Search"
+                 Dense="true"
+                 Clearable="true"
+                 ValueChanged="OnToolSelected"
+                 Class="mb-4"
+                 MaxLength="300" />
+
+@code {
+    private List<ToolInfo> tools = new()
+    {
+        new ToolInfo { Title="JSON Validator", Description="Prüfe und formatiere JSON-Daten.", Link="/json-validator" },
+        new ToolInfo { Title="Code Formatter", Description="Code mit nur einem Klick formatieren.", Link="/code-formatter" },
+        new ToolInfo { Title="Regex Tester", Description="Reguläre Ausdrücke testen und ausprobieren.", Link="/regex-tester" },
+        new ToolInfo { Title="YAML Parser", Description="Analysiere YAML-Strukturen direkt im Browser.", Link="/yaml-parser" }
+    };
+
+    private Task<IEnumerable<ToolInfo>> SearchTools(string value, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return Task.FromResult(tools.AsEnumerable());
+
+        return Task.FromResult(
+            tools.Where(tool => tool.Title.Contains(value, StringComparison.OrdinalIgnoreCase))
+        );
+    }
+
+    private void OnToolSelected(ToolInfo tool)
+    {
+        if (tool != null)
+        {
+            Navigation.NavigateTo(tool.Link);
+        }
+    }
+
+    public class ToolInfo
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Link { get; set; }
+    }
+}
