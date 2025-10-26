@@ -1,0 +1,62 @@
+﻿@using DevBench.Client.Services
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IStringLocalizer<Settings> Localizer
+@inject SettingsService SettingsService
+
+<MudMenu Icon="@Icons.Material.Filled.Settings" Label="@Localizer["settings"]" Color="Color.Inherit" RelativeWidth="DropdownWidth.Adaptive">
+    <MudMenuItem Disabled="true">
+        <MudText Typo="Typo.subtitle2">@Localizer["selectLanguages"]
+        </MudText>
+    </MudMenuItem>
+
+    @foreach (var language in SupportedLanguages)
+    {
+        <MudMenuItem OnClick="@(() => ChangeCulture(language.CultureCode, language.FlagPath))"
+                     Class="@GetSelectedClass(language.CultureCode)">
+            <MudStack Row="true" Spacing="10" AlignItems="AlignItems.Center">
+                <MudImage Src="@language.FlagPath" Alt="@Localizer[language.DisplayName]" Width="24" />
+                @Localizer[language.DisplayName]
+            </MudStack>
+        </MudMenuItem>
+    }
+
+    <MudDivider />
+
+    <MudMenuItem OnClick="SettingsService.ToggleDarkMode">
+        <MudStack Row="true" Spacing="10" AlignItems="AlignItems.Center">
+            <MudIcon Icon="@DarkLightModeButtonIcon"          
+                     Color="Color.Inherit"/>
+                     @Localizer["darkMode"]
+        </MudStack>
+    </MudMenuItem>
+</MudMenu>
+
+<style>
+    .mud-selected-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+</style>
+
+@code {
+    private List<LanguageInfo> SupportedLanguages = new()
+    {
+        new LanguageInfo("de-DE", "/flags/de-DE.png", "german"),
+        new LanguageInfo("en-US", "/flags/us-EN.png", "english"),
+    };
+
+    private async Task ChangeCulture(string culture, string flag)
+    {
+        await SettingsService.SetCulture(culture);
+    }
+
+    private string GetSelectedClass(string culture)
+    {
+        var cssClass = string.Equals(SettingsService.SelectedCulture, culture, StringComparison.OrdinalIgnoreCase) ? "mud-selected-item" : string.Empty;
+        return cssClass;
+    }
+
+    string DarkLightModeButtonIcon => SettingsService.IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode;
+    private record LanguageInfo(string CultureCode, string FlagPath, string DisplayName);
+}
