@@ -1,9 +1,9 @@
 services:
-  blazor-client:
+  dev-bench:
     build:
-      context: ./BlazorClient
+      context: ./DevBench
       dockerfile: Dockerfile
-    image: blazorclient:latest
+    image: tim153/dev-bench:latest
     ports:
       - "80:80"
     restart: unless-stopped
