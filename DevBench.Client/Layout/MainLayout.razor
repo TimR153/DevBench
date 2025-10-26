@@ -1,4 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using DevBench.Client.Services
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@inherits LayoutComponentBase
+@inject SettingsService SettingsService
+@inject IStringLocalizer<MainLayout> Localizer
 
 <MudThemeProvider @ref="_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
 <MudPopoverProvider />
@@ -6,59 +11,115 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar>
-        <MudGrid Spacing="5" Justify="Justify.SpaceBetween">
-            <MudItem xs="8" sm="8" md="8">
-                <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
-                    <MudLink Href="/">
-                        <MudImage Src="favicon.png" Alt="App Logo" Width="40" />
-                    </MudLink>
-                    <MudIconButton OnClick="DrawerToggle"
-                                   Icon="@Icons.Material.Rounded.Notes"
-                                   Color="Color.Inherit"
-                                   Edge="Edge.Start" />
-                    <SearchBox />
-                </MudStack>
-            </MudItem>
-
-            <MudItem xs="2" sm="2" md="2">
-                <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
-                    <MudTooltip Text="GitHub Repository">
-                        <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
-                                       Href="https://github.com/timr153/devbench"
-                                       Target="_blank"
+    @if (!_isInitialized)
+    {
+        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center"
+                  Style="@($"height:100vh; background-color: {_theme.PaletteDark.Background}; min-width: 100vw; position: relative; flex-direction: column;")">
+            <MudImage Src="appLogo.png" Alt="Logo" Width="400" Class="mb-6" />
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Style="width: 60%; max-width: 400px; margin: 0 auto;" />
+        </MudStack>
+    }
+    else
+    {
+        <MudAppBar>
+            <MudGrid Spacing="5" Justify="Justify.SpaceBetween">
+                <MudItem xs="8" sm="8" md="8">
+                    <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
+                        <MudLink Href="/">
+                            <MudImage Src="favicon.png" Alt="App Logo" Width="40" />
+                        </MudLink>
+                        <MudIconButton OnClick="DrawerToggle"
+                                       Icon="@Icons.Material.Rounded.Notes"
                                        Color="Color.Inherit"
-                                       Edge="Edge.End" />
-                    </MudTooltip>
+                                       Edge="Edge.Start" />
+                        <SearchBox />
+                    </MudStack>
+                </MudItem>
 
-                    <MudIconButton Icon="@DarkLightModeButtonIcon"
-                                   OnClick="DarkModeToggle"
-                                   Color="Color.Inherit"
-                                   Edge="Edge.End" />
-                </MudStack>
-            </MudItem>
-        </MudGrid>
-    </MudAppBar>
+                <MudItem xs="2" sm="2" md="2">
+                    <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
+                        <MudTooltip Text="@Localizer["gitHubRepo"]">
+                            <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
+                                           Href="https://github.com/timr153/devbench"
+                                           Target="_blank"
+                                           Color="Color.Inherit"
+                                           Edge="Edge.End" />
+                        </MudTooltip>
+                        <MudTooltip Text="@Localizer["settings"]">
+                            <DevBench.Client.Pages.Settings />
+                        </MudTooltip>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-        <MudDrawerHeader>
-            <MudImage Src="appLogo.png" Alt="App Logo" Class="mt-2" Width="200" />
-        </MudDrawerHeader>
-        <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
+        <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+            <MudDrawerHeader>
+                <MudImage Src="appLogo.png" Alt="App Logo" Class="mt-2" Width="200" />
+            </MudDrawerHeader>
+            <NavMenu />
+        </MudDrawer>
+        <MudMainContent>
+            <MudMainContent>
+                @Body
+            </MudMainContent>
+        </MudMainContent>
+    }
 </MudLayout>
 
 @code {
     private bool _drawerOpen = true;
-    private bool _isDarkMode = true;
+    private bool _isInitialized = false;
+    private bool _isDarkMode;
     private MudThemeProvider? _mudThemeProvider;
+
+    protected override void OnInitialized()
+    {
+        SettingsService.SettingsChanged += OnSettingsChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var savedCulture = await SettingsService.GetSavedCulture();
+            if (!string.IsNullOrEmpty(savedCulture))
+            {
+                await SettingsService.SetCulture(savedCulture);
+            }
+            else
+            {
+                var browserCulture = await SettingsService.GetBrowserCulture();
+                await SettingsService.SetCulture(browserCulture);
+            }
+            var savedDarkMode = await SettingsService.GetSavedDarkMode();
+            if (!string.IsNullOrEmpty(savedDarkMode))
+            {
+                var isDarkMode = string.Equals(savedDarkMode, bool.TrueString, StringComparison.OrdinalIgnoreCase) ? true : false;
+                await SettingsService.SetDarkMode(isDarkMode);
+            }
+            else
+            {
+                await SettingsService.SetDarkMode(true);
+            }
+            _isInitialized = true;
+            StateHasChanged();
+        }
+    }
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void OnSettingsChanged()
+    {
+        _isDarkMode = SettingsService.IsDarkMode;
+        StateHasChanged();
+    }
 
     MudTheme _theme = new MudTheme()
     {
-
         PaletteLight = new PaletteLight()
         {
             Primary = MudBlazor.Colors.Blue.Darken2,
@@ -82,20 +143,12 @@
         }
     };
 
-
-    protected override void OnInitialized()
+    private List<LanguageInfo> SupportedLanguages = new()
     {
-    }
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    void DarkModeToggle()
-    {
-        _isDarkMode = !_isDarkMode;
-    }
+        new LanguageInfo("de-DE", "/flags/de-DE.png", "german"),
+        new LanguageInfo("en-US", "/flags/us-EN.png", "english"),
+    };
 
     string DarkLightModeButtonIcon => _isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode;
+    private record LanguageInfo(string CultureCode, string FlagPath, string DisplayName);
 }

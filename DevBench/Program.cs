@@ -1,3 +1,4 @@
+using DevBench.Client.Services;
 using DevBench.Components;
 using MudBlazor.Services;
 
@@ -7,6 +8,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddMudServices();
+builder.Services.AddScoped<SettingsService>();
+builder.Services.AddLocalization(options => options.ResourcesPath = DevBench.Client.Constants.ResourcesPath);
 
 var app = builder.Build();
 
