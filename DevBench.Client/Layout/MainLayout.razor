@@ -7,50 +7,39 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
-            <MudLink Href="/">
-                <MudImage Src="favicon.png"
-                          Alt="App Logo"
-                          Width="40" />
-            </MudLink>
-            <MudIconButton OnClick="DrawerToggle"
-                           Icon="@Icons.Material.Rounded.Notes"
-                           Color="Color.Inherit"
-                           Edge="Edge.Start" />
-            <SearchBox />
-        </MudStack>
-        <MudSpacer />
-        <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
+        <MudGrid Spacing="5" Justify="Justify.SpaceBetween">
+            <MudItem xs="8" sm="8" md="8">
+                <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
+                    <MudLink Href="/">
+                        <MudImage Src="favicon.png" Alt="App Logo" Width="40" />
+                    </MudLink>
+                    <MudIconButton OnClick="DrawerToggle"
+                                   Icon="@Icons.Material.Rounded.Notes"
+                                   Color="Color.Inherit"
+                                   Edge="Edge.Start" />
+                    <SearchBox />
+                </MudStack>
+            </MudItem>
 
-            <MudIconButton Icon="@Icons.Material.Filled.KeyboardCommandKey"
-                           Target="_blank"
-                           Color="Color.Inherit"
-                           Edge="Edge.End"
-                           AriaLabel="Open Command Palette" />
+            <MudItem xs="2" sm="2" md="2">
+                <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
+                    <MudTooltip Text="GitHub Repository">
+                        <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
+                                       Href="https://github.com/timr153/devbench"
+                                       Target="_blank"
+                                       Color="Color.Inherit"
+                                       Edge="Edge.End" />
+                    </MudTooltip>
 
-            <MudTooltip Text=".NET Docs">
-                <MudIconButton Icon="@Icons.Custom.Brands.Microsoft"
-                               Href="https://docs.microsoft.com/dotnet/"
-                               Target="_blank"
-                               Color="Color.Inherit"
-                               Edge="Edge.End" />
-            </MudTooltip>
-
-            <MudTooltip Text="GitHub Repository">
-                <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
-                               Href="https://github.com/timr153/devbench"
-                               Target="_blank"
-                               Color="Color.Inherit"
-                               Edge="Edge.End" />
-            </MudTooltip>
-
-            <MudIconButton Icon="@DarkLightModeButtonIcon"
-                           OnClick="DarkModeToggle"
-                           Color="Color.Inherit"
-                           Edge="Edge.End"
-                           AriaLabel="Toggle dark mode" />
-        </MudStack>
+                    <MudIconButton Icon="@DarkLightModeButtonIcon"
+                                   OnClick="DarkModeToggle"
+                                   Color="Color.Inherit"
+                                   Edge="Edge.End" />
+                </MudStack>
+            </MudItem>
+        </MudGrid>
     </MudAppBar>
+
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
             <MudImage Src="appLogo.png" Alt="App Logo" Class="mt-2" Width="200" />

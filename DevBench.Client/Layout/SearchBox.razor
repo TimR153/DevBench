@@ -8,8 +8,14 @@
                  Dense="true"
                  Clearable="true"
                  ValueChanged="OnToolSelected"
-                 Class="mb-4"
-                 MaxLength="300" />
+                 Class="searchbox">
+    <ItemTemplate>
+        <div>
+            <div>@context.Title</div>
+            <div class="description">@context.Description</div>
+        </div>
+    </ItemTemplate>
+</MudAutocomplete>
 
 @code {
     private List<ToolInfo> tools = new()
