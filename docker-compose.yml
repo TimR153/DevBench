@@ -1,0 +1,9 @@
+services:
+  blazor-client:
+    build:
+      context: ./BlazorClient
+      dockerfile: Dockerfile
+    image: blazorclient:latest
+    ports:
+      - "80:80"
+    restart: unless-stopped

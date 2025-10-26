@@ -4,11 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>369a9d8a-8a35-4b92-bccc-627d3aa60dfd</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DevBench.Client\DevBench.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.21" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="MudBlazor" Version="8.13.0" />
   </ItemGroup>
 
