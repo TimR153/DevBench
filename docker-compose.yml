@@ -1,9 +1,8 @@
 services:
   dev-bench:
-    build:
-      context: ./DevBench
-      dockerfile: Dockerfile
     image: tim153/dev-bench:latest
+    environment:
+      TZ: Europe/Berlin
     ports:
-      - "80:80"
+      - "80:8080"
     restart: unless-stopped
