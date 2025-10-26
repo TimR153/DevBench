@@ -6,7 +6,7 @@
         public const string ResourcesPath = "Resources";
         public const string LocalStorageGetItem = "localStorage.getItem";
         public const string LocalStorageSetItem = "localStorage.setItem";
-        public const string BrowserLanguage = "navigator.language";
+        public const string BrowserLanguage = "browserJsFunctions.getLanguage";
         public static class LocalStorageKeys
         {
             public const string Culture = "culture";
