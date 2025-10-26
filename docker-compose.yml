@@ -1,9 +1,8 @@
 services:
-  blazor-client:
-    build:
-      context: ./BlazorClient
-      dockerfile: Dockerfile
-    image: blazorclient:latest
+  dev-bench:
+    image: tim153/dev-bench:latest
+    environment:
+      TZ: Europe/Berlin
     ports:
-      - "80:80"
+      - "80:8080"
     restart: unless-stopped
