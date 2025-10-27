@@ -4,7 +4,6 @@
 <footer aria-label="Seitenfuß">
     <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
         <MudGrid Spacing="3">
-            <!-- Brand + Kurztext -->
             <MudItem xs="12" md="4">
                 <MudStack Spacing="1">
                     <MudLink Href="/" Underline="Underline.Hover">
@@ -21,7 +20,6 @@
                 </MudStack>
             </MudItem>
 
-            <!-- Rechtliches -->
             <MudItem xs="12" sm="6" md="2">
                 <MudText Typo="Typo.subtitle2" Class="mb-1">Rechtliches</MudText>
                 <MudList T="string" Dense="true">
@@ -32,7 +30,6 @@
                 </MudList>
             </MudItem>
 
-            <!-- Transparenz -->
             <MudItem xs="12" sm="6" md="3">
                 <MudText Typo="Typo.subtitle2" Class="mb-1">Transparenz</MudText>
                 <MudList T="string" Dense="true">
@@ -43,7 +40,6 @@
                 </MudList>
             </MudItem>
 
-            <!-- Kontakt + Einstellungen -->
             <MudItem xs="12" md="3">
                 <MudText Typo="Typo.subtitle2" Class="mb-1">Kontakt & Einstellungen</MudText>
                 <MudList T="string" Dense="true">
@@ -51,19 +47,7 @@
                         <MudLink Href="mailto:devbench@deinedomain.de" Target="_blank" Underline="Underline.Hover">devbench@deinedomain.de</MudLink>
                     </MudListItem>
                     <MudListItem T="string">
-                        <MudLink Href="https://github.com/DEIN_GITHUB" Target="_blank" Underline="Underline.Hover">GitHub Repository</MudLink>
-                    </MudListItem>
-                    <MudListItem T="string">
-                        <MudSwitch @bind-Checked="_isDarkFooter"
-                                   ThumbIconChecked="@Icons.Material.Filled.DarkMode"
-                                   ThumbIconUnchecked="@Icons.Material.Filled.LightMode" />
-                        <MudText Typo="Typo.caption" Class="ml-2">Dark Mode</MudText>
-                    </MudListItem>
-                    <MudListItem T="string">
-                        <MudSelect T="string" Label="Sprache" Dense="true" Class="w-100">
-                            <MudSelectItem>Deutsch</MudSelectItem>
-                            <MudSelectItem>English</MudSelectItem>
-                        </MudSelect>
+                        <MudLink Href="https://github.com/timr153/devbench" Target="_blank" Underline="Underline.Hover">GitHub Repository</MudLink>
                     </MudListItem>
                     <MudListItem T="string">
                         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@OpenCookiePrefs" StartIcon="@Icons.Material.Filled.Cookie">
@@ -76,8 +60,7 @@
 
         <MudDivider Class="my-4" />
 
-        <!-- Untere Zeile -->
-        <MudGrid AlignItems="AlignItems.Center">
+        <MudGrid >
             <MudItem xs="12" md="6">
                 <MudText Typo="Typo.caption">
                     © @DateTime.Now.Year Dev Bench • Version @_appVersion • Letzte Änderung: @_lastUpdated
