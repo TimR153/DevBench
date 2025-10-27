@@ -1,0 +1,119 @@
+﻿@inject IJSRuntime JS
+
+<MudDivider Class="mt-6" />
+<footer aria-label="Seitenfuß">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
+        <MudGrid Spacing="3">
+            <!-- Brand + Kurztext -->
+            <MudItem xs="12" md="4">
+                <MudStack Spacing="1">
+                    <MudLink Href="/" Underline="Underline.Hover">
+                        <MudImage Src="appLogo.png" Alt="Dev Bench Logo" Width="160" />
+                    </MudLink>
+                    <MudText Typo="Typo.body2">
+                        Dev Bench: schlanke Entwickler-Tools – lokal im Browser, ohne Tracking.
+                    </MudText>
+                    <MudStack Row="true" Spacing="1" Class="mt-1">
+                        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Secondary">Blazor WASM</MudChip>
+                        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Secondary">MudBlazor</MudChip>
+                        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Secondary">Offline‑gedacht</MudChip>
+                    </MudStack>
+                </MudStack>
+            </MudItem>
+
+            <!-- Rechtliches -->
+            <MudItem xs="12" sm="6" md="2">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Rechtliches</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string"><MudLink Href="/impressum" Underline="Underline.Hover">Impressum</MudLink></MudListItem>
+                    <MudListItem T="string"><MudLink Href="/privacy" Underline="Underline.Hover">Datenschutz</MudLink></MudListItem>
+                    <MudListItem T="string"><MudLink Href="/terms" Underline="Underline.Hover">Nutzungsbedingungen</MudLink></MudListItem>
+                    <MudListItem T="string"><MudLink Href="/cookies" Underline="Underline.Hover">Cookie‑Hinweis</MudLink></MudListItem>
+                </MudList>
+            </MudItem>
+
+            <!-- Transparenz -->
+            <MudItem xs="12" sm="6" md="3">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Transparenz</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string"><MudLink Href="/datensicherheit" Underline="Underline.Hover">Datenverarbeitung: lokal im Browser</MudLink></MudListItem>
+                    <MudListItem T="string"><MudLink Href="/open-source" Underline="Underline.Hover">Open Source & Lizenzen</MudLink></MudListItem>
+                    <MudListItem T="string"><MudLink Href="/drittinhalte" Underline="Underline.Hover">Externe Links & Haftung</MudLink></MudListItem>
+                    <MudListItem T="string"><MudLink Href="/barrierefreiheit" Underline="Underline.Hover">Erklärung zur Barrierefreiheit</MudLink></MudListItem>
+                </MudList>
+            </MudItem>
+
+            <!-- Kontakt + Einstellungen -->
+            <MudItem xs="12" md="3">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Kontakt & Einstellungen</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string">
+                        <MudLink Href="mailto:devbench@deinedomain.de" Target="_blank" Underline="Underline.Hover">devbench@deinedomain.de</MudLink>
+                    </MudListItem>
+                    <MudListItem T="string">
+                        <MudLink Href="https://github.com/DEIN_GITHUB" Target="_blank" Underline="Underline.Hover">GitHub Repository</MudLink>
+                    </MudListItem>
+                    <MudListItem T="string">
+                        <MudSwitch @bind-Checked="_isDarkFooter"
+                                   ThumbIconChecked="@Icons.Material.Filled.DarkMode"
+                                   ThumbIconUnchecked="@Icons.Material.Filled.LightMode" />
+                        <MudText Typo="Typo.caption" Class="ml-2">Dark Mode</MudText>
+                    </MudListItem>
+                    <MudListItem T="string">
+                        <MudSelect T="string" Label="Sprache" Dense="true" Class="w-100">
+                            <MudSelectItem>Deutsch</MudSelectItem>
+                            <MudSelectItem>English</MudSelectItem>
+                        </MudSelect>
+                    </MudListItem>
+                    <MudListItem T="string">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@OpenCookiePrefs" StartIcon="@Icons.Material.Filled.Cookie">
+                            Cookie‑Präferenzen
+                        </MudButton>
+                    </MudListItem>
+                </MudList>
+            </MudItem>
+        </MudGrid>
+
+        <MudDivider Class="my-4" />
+
+        <!-- Untere Zeile -->
+        <MudGrid AlignItems="AlignItems.Center">
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.caption">
+                    © @DateTime.Now.Year Dev Bench • Version @_appVersion • Letzte Änderung: @_lastUpdated
+                </MudText>
+            </MudItem>
+            <MudItem xs="12" md="6" Class="d-flex justify-end">
+                <MudText Typo="Typo.caption">
+                    Tech‑Stack: Blazor WebAssembly · MudBlazor · Keine externen Webfonts/Tracker
+                </MudText>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</footer>
+
+@code {
+    private bool _isDarkFooter;
+    private string _lang = "de";
+    private bool _cookieDialog;
+    private readonly string _appVersion = "1.0.0";
+    private readonly string _lastUpdated = "2025-10-26";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isDarkFooter = string.Equals(await JS.InvokeAsync<string>("localStorage.getItem", "devbench:theme"), "dark", StringComparison.OrdinalIgnoreCase);
+        _lang = await JS.InvokeAsync<string>("localStorage.getItem", "devbench:lang") ?? "de";
+    }
+
+    private async Task PersistTheme(bool value)
+    {
+        _isDarkFooter = value;
+        await JS.InvokeVoidAsync("localStorage.setItem", "devbench:theme", _isDarkFooter ? "dark" : "light");
+        ThemeChanged?.Invoke(_isDarkFooter);
+    }
+
+    private void OpenCookiePrefs() => _cookieDialog = true;
+    private void CloseCookiePrefs() => _cookieDialog = false;
+
+    public static event Action<bool>? ThemeChanged;
+}
