@@ -19,23 +19,19 @@
 
             <MudItem xs="12" sm="6" md="3">
                 <MudText Typo="Typo.subtitle2" Class="mb-1">Rechtliches</MudText>
-                <MudList T="string" Dense="true">
-                    <MudListItem T="string"><MudLink Href="/impressum" Underline="Underline.Hover">Impressum</MudLink></MudListItem>
-                    <MudListItem T="string"><MudLink Href="/privacy" Underline="Underline.Hover">Datenschutz</MudLink></MudListItem>
-                    <MudListItem T="string"><MudLink Href="/terms" Underline="Underline.Hover">Nutzungsbedingungen</MudLink></MudListItem>
-                </MudList>
+                <MudStack>
+                    <MudLink Href="/impressum" Underline="Underline.Hover">Impressum</MudLink>
+                    <MudLink Href="/privacy" Underline="Underline.Hover">Datenschutz</MudLink>
+                    <MudLink Href="/terms" Underline="Underline.Hover">Nutzungsbedingungen</MudLink>
+                </MudStack>
             </MudItem>
 
             <MudItem xs="12" sm="6" md="5">
                 <MudText Typo="Typo.subtitle2" Class="mb-1">Kontakt</MudText>
-                <MudList T="string" Dense="true">
-                    <MudListItem T="string">
-                        <MudLink Href="mailto:kontakt@timrentrop.de" Underline="Underline.Hover">kontakt@timrentrop.de</MudLink>
-                    </MudListItem>
-                    <MudListItem T="string">
-                        <MudLink Href="https://github.com/timr153/devbench" Target="_blank" Underline="Underline.Hover" rel="noopener">GitHub Repository</MudLink>
-                    </MudListItem>
-                </MudList>
+                <MudStack>
+                    <MudLink Href="mailto:kontakt@timrentrop.de" Underline="Underline.Hover">kontakt@timrentrop.de</MudLink>
+                    <MudLink Href="https://github.com/timr153/devbench" Target="_blank" Underline="Underline.Hover" rel="noopener">GitHub Repository</MudLink>
+                </MudStack>
             </MudItem>
         </MudGrid>
 
