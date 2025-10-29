@@ -77,7 +77,14 @@
             else
             {
                 var browserCulture = await SettingsService.GetBrowserCulture();
-                await SettingsService.SetCulture(browserCulture);
+                if (SupportedLanguages.Any(x => x.CultureCode == browserCulture))
+                {
+                    await SettingsService.SetCulture(browserCulture);
+                }
+                else
+                {
+                    await SettingsService.SetCulture(SupportedLanguages.First().CultureCode);
+                }
             }
             var savedDarkMode = await SettingsService.GetSavedDarkMode();
             if (!string.IsNullOrEmpty(savedDarkMode))

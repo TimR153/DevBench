@@ -29,7 +29,7 @@
                         </MudButton>
                         <MudButton Variant="Variant.Outlined" Color="Color.Secondary"
                                    StartIcon="@Icons.Material.Filled.Info" Size="Size.Medium"
-                                   OnClick="@(() => Navigation.NavigateTo("/about"))">
+                                   OnClick="@(() => Navigation.NavigateTo("/about"))" Disabled="true">
                             Über Dev Bench
                         </MudButton>
                         <MudButton Variant="Variant.Outlined" Color="Color.Default"
@@ -112,7 +112,7 @@
             </MudItem>
         </MudGrid>
     </MudContainer>
-    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 py-8">
+    <MudContainer id="tools" MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 py-8">
         <MudStack Spacing="1" Class="mt-4 mb-6">
             <MudText Typo="Typo.h3" Class="fw-600">Unsere Top-Tools – in Arbeit</MudText>
             <MudText Typo="Typo.subtitle1" Class="text-medium-emphasis">
@@ -166,14 +166,8 @@
         }
     }
 
-    public static event Action<bool>? ThemeChanged;
-
     public void NavigateTo(string url) => Navigation.NavigateTo(url);
 
     private async Task ScrollToId(string id)
-    {
-        await JS.InvokeVoidAsync("eval", $"document.getElementById('{id}')?.scrollIntoView({{behavior:'smooth'}});");
-    }
-
-    public record ToolTile(string Name, string Description, string Icon, string Link);
+      => await JS.InvokeVoidAsync("devbench.scrollToId", id);
 }

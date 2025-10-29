@@ -1,12 +1,9 @@
-﻿@inject IJSRuntime JS
-
-<MudDivider Class="mt-6" />
-<footer aria-label="Seitenfuß">
+﻿<footer aria-label="Seitenfuß">
     <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
         <MudGrid Spacing="3">
             <MudItem xs="12" md="4">
                 <MudStack Spacing="1">
-                    <MudLink Href="/" Underline="Underline.Hover">
+                    <MudLink Href="/" Underline="Underline.Hover" aria-label="Startseite">
                         <MudImage Src="appLogo.png" Alt="Dev Bench Logo" Width="160" />
                     </MudLink>
                     <MudText Typo="Typo.body2">
@@ -20,39 +17,23 @@
                 </MudStack>
             </MudItem>
 
-            <MudItem xs="12" sm="6" md="2">
+            <MudItem xs="12" sm="6" md="3">
                 <MudText Typo="Typo.subtitle2" Class="mb-1">Rechtliches</MudText>
                 <MudList T="string" Dense="true">
                     <MudListItem T="string"><MudLink Href="/impressum" Underline="Underline.Hover">Impressum</MudLink></MudListItem>
                     <MudListItem T="string"><MudLink Href="/privacy" Underline="Underline.Hover">Datenschutz</MudLink></MudListItem>
                     <MudListItem T="string"><MudLink Href="/terms" Underline="Underline.Hover">Nutzungsbedingungen</MudLink></MudListItem>
-                    <MudListItem T="string"><MudLink Href="/cookies" Underline="Underline.Hover">Cookie‑Hinweis</MudLink></MudListItem>
                 </MudList>
             </MudItem>
 
-            <MudItem xs="12" sm="6" md="3">
-                <MudText Typo="Typo.subtitle2" Class="mb-1">Transparenz</MudText>
-                <MudList T="string" Dense="true">
-                    <MudListItem T="string"><MudLink Href="/datensicherheit" Underline="Underline.Hover">Datenverarbeitung: lokal im Browser</MudLink></MudListItem>
-                    <MudListItem T="string"><MudLink Href="/open-source" Underline="Underline.Hover">Open Source & Lizenzen</MudLink></MudListItem>
-                    <MudListItem T="string"><MudLink Href="/drittinhalte" Underline="Underline.Hover">Externe Links & Haftung</MudLink></MudListItem>
-                    <MudListItem T="string"><MudLink Href="/barrierefreiheit" Underline="Underline.Hover">Erklärung zur Barrierefreiheit</MudLink></MudListItem>
-                </MudList>
-            </MudItem>
-
-            <MudItem xs="12" md="3">
-                <MudText Typo="Typo.subtitle2" Class="mb-1">Kontakt & Einstellungen</MudText>
+            <MudItem xs="12" sm="6" md="5">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Kontakt</MudText>
                 <MudList T="string" Dense="true">
                     <MudListItem T="string">
-                        <MudLink Href="mailto:devbench@deinedomain.de" Target="_blank" Underline="Underline.Hover">devbench@deinedomain.de</MudLink>
+                        <MudLink Href="mailto:kontakt@timrentrop.de" Underline="Underline.Hover">kontakt@timrentrop.de</MudLink>
                     </MudListItem>
                     <MudListItem T="string">
-                        <MudLink Href="https://github.com/timr153/devbench" Target="_blank" Underline="Underline.Hover">GitHub Repository</MudLink>
-                    </MudListItem>
-                    <MudListItem T="string">
-                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@OpenCookiePrefs" StartIcon="@Icons.Material.Filled.Cookie">
-                            Cookie‑Präferenzen
-                        </MudButton>
+                        <MudLink Href="https://github.com/timr153/devbench" Target="_blank" Underline="Underline.Hover" rel="noopener">GitHub Repository</MudLink>
                     </MudListItem>
                 </MudList>
             </MudItem>
@@ -60,15 +41,10 @@
 
         <MudDivider Class="my-4" />
 
-        <MudGrid >
+        <MudGrid>
             <MudItem xs="12" md="6">
                 <MudText Typo="Typo.caption">
                     © @DateTime.Now.Year Dev Bench • Version @_appVersion • Letzte Änderung: @_lastUpdated
-                </MudText>
-            </MudItem>
-            <MudItem xs="12" md="6" Class="d-flex justify-end">
-                <MudText Typo="Typo.caption">
-                    Tech‑Stack: Blazor WebAssembly · MudBlazor · Keine externen Webfonts/Tracker
                 </MudText>
             </MudItem>
         </MudGrid>
@@ -76,27 +52,6 @@
 </footer>
 
 @code {
-    private bool _isDarkFooter;
-    private string _lang = "de";
-    private bool _cookieDialog;
     private readonly string _appVersion = "1.0.0";
     private readonly string _lastUpdated = "2025-10-26";
-
-    protected override async Task OnInitializedAsync()
-    {
-        _isDarkFooter = string.Equals(await JS.InvokeAsync<string>("localStorage.getItem", "devbench:theme"), "dark", StringComparison.OrdinalIgnoreCase);
-        _lang = await JS.InvokeAsync<string>("localStorage.getItem", "devbench:lang") ?? "de";
-    }
-
-    private async Task PersistTheme(bool value)
-    {
-        _isDarkFooter = value;
-        await JS.InvokeVoidAsync("localStorage.setItem", "devbench:theme", _isDarkFooter ? "dark" : "light");
-        ThemeChanged?.Invoke(_isDarkFooter);
-    }
-
-    private void OpenCookiePrefs() => _cookieDialog = true;
-    private void CloseCookiePrefs() => _cookieDialog = false;
-
-    public static event Action<bool>? ThemeChanged;
 }
