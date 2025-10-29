@@ -4,8 +4,8 @@
 
 <PageTitle>Dev Bench – Dein Entwickler-Toolportal</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 py-6">
-    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 py-6">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 pt-2 pb-6 mt-0">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 pt-2 pb-6 mt-0">
         <MudGrid Justify="Justify.SpaceBetween" Spacing="4" Class="mt-4">
             <MudItem xs="12" md="5" lg="5" Class="my-6 d-flex flex-column px-4 py-6">
                 <MudStack Spacing="5" Justify="Justify.FlexStart" AlignItems="AlignItems.Start">
@@ -58,7 +58,7 @@
 
             <MudItem xs="12" md="7" lg="7" Class="d-flex justify-center justify-md-end">
                 <MudHidden Breakpoint="Breakpoint.Sm">
-                    <MudPaper Elevation="3" Class="pa-5"
+                    <MudPaper Elevation="8" Class="pa-5"
                               Style="border-radius:16px; background-color: var(--mud-palette-background);">
                         <MudStack Spacing="2">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
@@ -114,65 +114,44 @@
     </MudContainer>
     <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mx-auto px-4 py-8">
         <MudStack Spacing="1" Class="mt-4 mb-6">
-            <MudText Typo="Typo.h3" Class="fw-600">Unsere Top-Tools</MudText>
+            <MudText Typo="Typo.h3" Class="fw-600">Unsere Top-Tools – in Arbeit</MudText>
             <MudText Typo="Typo.subtitle1" Class="text-medium-emphasis">
-                Schnelle Helfer für deinen Dev-Alltag – schön, schnell, offlinefähig.
+                Dieser Bereich befindet sich aktuell in Entwicklung und ist noch nicht verfügbar.
             </MudText>
         </MudStack>
 
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+            Geplante erste Version: JSON-Beautifier, Regex-Tester, UUID-Generator und Diff-Viewer.
+        </MudAlert>
+
         <MudGrid Spacing="3" Justify="Justify.FlexStart">
-            @foreach (var tool in new[]
-                        {
-                        new ToolTile("JSON Beautifier", "Formatiert und prüft JSON-Daten", Icons.Material.Filled.Code, "/tools/json"),
-                        new ToolTile("Regex Tester", "Reguläre Ausdrücke sofort prüfen", Icons.Material.Filled.ShowChart, "/tools/regex"),
-                        new ToolTile("UUID Generator", "Erzeuge eindeutige IDs", Icons.Material.Filled.EnhancedEncryption, "/tools/uuid"),
-                        new ToolTile("API Docs", "Deine Schnittstellen-Dokumentation", Icons.Material.Filled.Api, "/tools/api")
-                        })
+            @foreach (var i in Enumerable.Range(0, 4))
             {
                 <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudCard Class="tool-card h-100">
                         <MudCardHeader Class="px-4 pt-4 pb-2">
                             <div class="d-flex align-center">
-                                <MudIcon Icon="@tool.Icon" Size="Size.Large" Class="me-2 text-primary" />
-                                <MudText Typo="Typo.h6">@tool.Name</MudText>
+                                <MudSkeleton Width="36px" Height="36px" Variant="SkeletonVariant.Circle" Class="me-2" />
+                                <MudSkeleton Width="60%" Height="24px" Variant="SkeletonVariant.Text" />
                             </div>
                         </MudCardHeader>
 
                         <MudCardContent Class="px-4 pb-2 text-medium-emphasis">
-                            @tool.Description
+                            <MudSkeleton Width="90%" Height="16px" Class="mb-1" />
+                            <MudSkeleton Width="75%" Height="16px" />
                         </MudCardContent>
 
                         <MudCardActions Class="px-4 pb-4 pt-0">
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Href="@tool.Link" EndIcon="@Icons.Material.Filled.ArrowForward">
-                                Starten
+                            <MudButton Disabled="true" Variant="Variant.Outlined">
+                                In Arbeit
                             </MudButton>
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
             }
         </MudGrid>
-
-        <MudPaper Class="pa-5 mt-10 faq-paper" Elevation="0" Style="border-radius:16px;">
-            <MudExpansionPanels Dense="true">
-                <MudExpansionPanel Text="Wie funktioniert das Toolportal?">
-                    Alle Tools laufen lokal in deinem Browser und verarbeiten keine Daten extern. [web:15]
-                </MudExpansionPanel>
-                <MudExpansionPanel Text="Kann ich Dev Bench offline nutzen?">
-                    Ja, die wichtigsten Tools sind PWA-fähig und funktionieren offline. [web:3]
-                </MudExpansionPanel>
-                <MudExpansionPanel Text="Gibt es einen Dark-Mode?">
-                    Ja, Theme-Wechsel ist jederzeit möglich. [web:3]
-                </MudExpansionPanel>
-            </MudExpansionPanels>
-        </MudPaper>
     </MudContainer>
-
-    @code {
-        public record ToolTile(string Name, string Description, string Icon, string Link);
-    }
-
 </MudContainer>
-
 
 @code {
     private bool _isDark = false;
@@ -195,4 +174,6 @@
     {
         await JS.InvokeVoidAsync("eval", $"document.getElementById('{id}')?.scrollIntoView({{behavior:'smooth'}});");
     }
+
+    public record ToolTile(string Name, string Description, string Icon, string Link);
 }
