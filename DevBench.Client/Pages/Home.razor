@@ -29,7 +29,7 @@
                         </MudButton>
                         <MudButton Variant="Variant.Outlined" Color="Color.Secondary"
                                    StartIcon="@Icons.Material.Filled.Info" Size="Size.Medium"
-                                   OnClick="@(() => Navigation.NavigateTo("/about"))" Disabled="true">
+                                   Disabled="true">
                             Über Dev Bench
                         </MudButton>
                         <MudButton Variant="Variant.Outlined" Color="Color.Default"
@@ -154,20 +154,6 @@
 </MudContainer>
 
 @code {
-    private bool _isDark = false;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var ls = await JS.InvokeAsync<string>("localStorage.getItem", "devbench:theme");
-            _isDark = string.Equals(ls, "dark", StringComparison.OrdinalIgnoreCase);
-            StateHasChanged();
-        }
-    }
-
-    public void NavigateTo(string url) => Navigation.NavigateTo(url);
-
     private async Task ScrollToId(string id)
-      => await JS.InvokeVoidAsync("devbench.scrollToId", id);
+      => await JS.InvokeVoidAsync(Constants.JSFunctions.ScrollToId, id);
 }

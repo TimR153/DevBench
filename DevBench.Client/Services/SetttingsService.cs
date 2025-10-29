@@ -23,7 +23,7 @@ namespace DevBench.Client.Services
 
         public async Task<string> GetBrowserCulture()
         {
-            return await _jsRuntime.InvokeAsync<string>(Constants.BrowserLanguage);
+            return await _jsRuntime.InvokeAsync<string>(Constants.JSFunctions.GetLanguage);
         }
 
         public async Task SetCulture(string culture)
