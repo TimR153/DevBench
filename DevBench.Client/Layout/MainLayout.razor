@@ -26,12 +26,8 @@
                 <MudItem xs="8" sm="8" md="8">
                     <MudStack Row="true" Spacing="5" AlignItems="AlignItems.Center">
                         <MudLink Href="/">
-                            <MudImage Src="favicon.png" Alt="App Logo" Width="40" />
+                            <MudImage Src="appLogo.png" Alt="App Logo" Width="200" />
                         </MudLink>
-                        <MudIconButton OnClick="DrawerToggle"
-                                       Icon="@Icons.Material.Rounded.Notes"
-                                       Color="Color.Inherit"
-                                       Edge="Edge.Start" />
                         <SearchBox />
                     </MudStack>
                 </MudItem>
@@ -52,23 +48,14 @@
                 </MudItem>
             </MudGrid>
         </MudAppBar>
-
-        <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-            <MudDrawerHeader>
-                <MudImage Src="appLogo.png" Alt="App Logo" Class="mt-2" Width="200" />
-            </MudDrawerHeader>
-            <NavMenu />
-        </MudDrawer>
         <MudMainContent>
-            <MudMainContent>
-                @Body
-            </MudMainContent>
+            @Body
         </MudMainContent>
+        <Footer />
     }
 </MudLayout>
 
 @code {
-    private bool _drawerOpen = true;
     private bool _isInitialized = false;
     private bool _isDarkMode;
     private MudThemeProvider? _mudThemeProvider;
@@ -90,7 +77,14 @@
             else
             {
                 var browserCulture = await SettingsService.GetBrowserCulture();
-                await SettingsService.SetCulture(browserCulture);
+                if (SupportedLanguages.Any(x => x.CultureCode == browserCulture))
+                {
+                    await SettingsService.SetCulture(browserCulture);
+                }
+                else
+                {
+                    await SettingsService.SetCulture(SupportedLanguages.First().CultureCode);
+                }
             }
             var savedDarkMode = await SettingsService.GetSavedDarkMode();
             if (!string.IsNullOrEmpty(savedDarkMode))
@@ -107,11 +101,6 @@
         }
     }
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
     private void OnSettingsChanged()
     {
         _isDarkMode = SettingsService.IsDarkMode;
@@ -122,19 +111,42 @@
     {
         PaletteLight = new PaletteLight()
         {
-            Primary = MudBlazor.Colors.Blue.Darken2,
-            Secondary = MudBlazor.Colors.Blue.Accent2,
+            Primary = MudBlazor.Colors.Blue.Darken2, 
+            Secondary = MudBlazor.Colors.LightBlue.Darken4,
+            Background = MudBlazor.Colors.Gray.Lighten2, 
+            Surface = MudBlazor.Colors.Shades.White,
             AppbarBackground = MudBlazor.Colors.Gray.Darken1,
             DrawerBackground = MudBlazor.Colors.Gray.Lighten1,
-            Background = MudBlazor.Colors.Gray.Lighten2,
-            DrawerText = MudBlazor.Colors.Gray.Darken4
+            TextPrimary = MudBlazor.Colors.Gray.Darken4,
+            TextSecondary = MudBlazor.Colors.Gray.Darken2,
+            DrawerText = MudBlazor.Colors.Gray.Darken4,
+            AppbarText = MudBlazor.Colors.Shades.White,
+            Info = MudBlazor.Colors.Blue.Accent4,
+            Success = MudBlazor.Colors.Green.Darken3, 
+            Warning = MudBlazor.Colors.Orange.Darken1,   
+            Error = MudBlazor.Colors.Red.Darken1, 
+            ActionDefault = MudBlazor.Colors.Blue.Darken1, 
+            ActionDisabled = MudBlazor.Colors.Gray.Lighten1,
+            ActionDisabledBackground = MudBlazor.Colors.Gray.Lighten3,
         },
         PaletteDark = new PaletteDark()
         {
-            Primary = MudBlazor.Colors.Blue.Darken2,
-            Secondary = MudBlazor.Colors.Blue.Accent4,
-            TextPrimary = MudBlazor.Colors.Gray.Lighten3,
-            DrawerText = MudBlazor.Colors.Gray.Lighten2
+            Primary = MudBlazor.Colors.Blue.Darken3,
+            Secondary = MudBlazor.Colors.Blue.Accent2,
+            Background = MudBlazor.Colors.Gray.Darken4,
+            Surface = MudBlazor.Colors.Gray.Darken3,
+            DrawerBackground = MudBlazor.Colors.Gray.Darken4,
+            DrawerText = MudBlazor.Colors.Gray.Lighten4,
+            AppbarBackground = MudBlazor.Colors.Gray.Darken3,
+            TextPrimary = MudBlazor.Colors.Gray.Lighten4,
+            TextSecondary = MudBlazor.Colors.Gray.Lighten2,
+            Info = MudBlazor.Colors.Blue.Accent2,
+            Success = MudBlazor.Colors.Green.Default,
+            Warning = MudBlazor.Colors.Orange.Accent2,
+            Error = MudBlazor.Colors.Red.Accent2,
+            ActionDefault = MudBlazor.Colors.Blue.Lighten2,
+            ActionDisabled = MudBlazor.Colors.Gray.Darken1,
+            ActionDisabledBackground = MudBlazor.Colors.Gray.Darken3
         },
         LayoutProperties = new LayoutProperties()
         {

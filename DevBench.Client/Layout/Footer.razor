@@ -1,0 +1,53 @@
+﻿<footer aria-label="Seitenfuß">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
+        <MudGrid Spacing="3">
+            <MudItem xs="12" md="4">
+                <MudStack Spacing="1">
+                    <MudLink Href="/" Underline="Underline.Hover" aria-label="Startseite">
+                        <MudImage Src="appLogo.png" Alt="Dev Bench Logo" Width="160" />
+                    </MudLink>
+                    <MudText Typo="Typo.body2">
+                        Dev Bench: schlanke Entwickler-Tools – lokal im Browser, ohne Tracking.
+                    </MudText>
+                    <MudStack Row="true" Spacing="1" Class="mt-1">
+                        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Secondary">Blazor WASM</MudChip>
+                        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Secondary">MudBlazor</MudChip>
+                        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Secondary">Offline‑gedacht</MudChip>
+                    </MudStack>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Rechtliches</MudText>
+                <MudStack>
+                    <MudLink Href="/impressum" Underline="Underline.Hover">Impressum</MudLink>
+                    <MudLink Href="/privacy" Underline="Underline.Hover">Datenschutz</MudLink>
+                    <MudLink Href="/terms" Underline="Underline.Hover">Nutzungsbedingungen</MudLink>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="5">
+                <MudText Typo="Typo.subtitle2" Class="mb-1">Kontakt</MudText>
+                <MudStack>
+                    <MudLink Href="mailto:kontakt@timrentrop.de" Underline="Underline.Hover">kontakt@timrentrop.de</MudLink>
+                    <MudLink Href="https://github.com/timr153/devbench" Target="_blank" Underline="Underline.Hover" rel="noopener">GitHub Repository</MudLink>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+
+        <MudDivider Class="my-4" />
+
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.caption">
+                    © @DateTime.Now.Year Dev Bench • Version @_appVersion • Letzte Änderung: @_lastUpdated
+                </MudText>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</footer>
+
+@code {
+    private readonly string _appVersion = "1.0.0";
+    private readonly string _lastUpdated = "2025-10-26";
+}
